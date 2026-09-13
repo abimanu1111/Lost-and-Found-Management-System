@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FindIt - Lost & Found</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo" id="logo">
+        <img class="logo-image" src="/static/img/logo.jpeg" alt="FindIt logo" />
+        <div class="logo-text">
+          <span>FindIt</span>
+          <small>Place where to report found and lost items</small>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="btn-link" id="homeBtn">Home</button>
+        <button class="btn-primary" id="reportBtn">Report Item</button>
+        <button class="btn-link" id="myReportsBtn" style="display:none;">My Reports</button>
+        <button class="btn-link" id="loginBtn">Login</button>
+        <button class="btn-secondary" id="signupBtn">Sign Up</button>
+        <button class="btn-link" id="logoutBtn" style="display:none;">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main container">
+    <section id="homeView" class="view active">
+      <h1 class="page-title">Lost & Found Items</h1>
+      <div id="publicStatsGrid" class="stats-grid public-stats"></div>
+      <div class="filters-card">
+        <div class="filters-grid">
+          <div>
+            <label>Type</label>
+            <select id="filterType">
+              <option value="all">All Items</option>
+              <option value="lost">Lost Items</option>
+              <option value="found">Found Items</option>
+            </select>
+          </div>
+          <div>
+            <label>Category</label>
+            <select id="filterCategory">
+              <option value="all">All Categories</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Keys">Keys</option>
+              <option value="Wallet">Wallet</option>
+              <option value="Phone">Phone</option>
+              <option value="Jewelry">Jewelry</option>
+              <option value="Documents">Documents</option>
+              <option value="Bags">Bags</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label>Search</label>
+            <input id="searchQuery" type="text" placeholder="Search items..." />
+          </div>
+        </div>
+      </div>
+      <div id="itemsGrid" class="items-grid"></div>
+      <div id="emptyState" class="empty-state">No items found. Be the first to report one!</div>
+    </section>
+
+    <section id="loginView" class="view">
+      <h1 class="page-title page-title-center">Login</h1>
+      <div class="form-card login-form-card">
+        <form id="loginForm" class="form">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required />
+          </div>
+          <button class="btn-primary" type="submit">Login</button>
+          <p class="form-hint">
+            No account? <button class="btn-link" type="button" id="goSignup">Sign Up</button>
+          </p>
+          <p class="form-hint">
+            Forgot password? <button class="btn-link" type="button" id="goForgot">Reset here</button>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section id="forgotView" class="view">
+      <h1 class="page-title">Reset Password</h1>
+      <div class="form-card">
+        <form id="forgotForm" class="form">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label>Security Question</label>
+            <input type="text" value="Favourite color" readonly />
+          </div>
+          <div class="form-group">
+            <label>Answer</label>
+            <input type="text" name="securityAnswer" required />
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" name="newPassword" minlength="6" required />
+          </div>
+          <button class="btn-primary" type="submit">Reset Password</button>
+          <p class="form-hint">
+            Back to <button class="btn-link" type="button" id="goLoginFromForgot">Login</button>
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <section id="signupView" class="view">
+      <h1 class="page-title">Sign Up</h1>
+      <div class="form-card">
+        <form id="signupForm" class="form">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" minlength="6" required />
+          </div>
+          <div class="form-group">
+            <label>Security Question</label>
+            <input type="text" value="Favourite color" readonly />
+          </div>
+          <div class="form-group">
+            <label>Answer</label>
+            <input type="text" name="securityAnswer" required />
+          </div>
+          <button class="btn-primary" type="submit">Create Account</button>
+          <p class="form-hint">Already have an account? <button class="btn-link" type="button" id="goLogin">Login</button></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="reportView" class="view">
+      <h1 class="page-title page-title-center">Report An Item</h1>
+      <div class="form-card report-form-card">
+        <form id="reportForm" class="form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label>Item Type</label>
+            <select name="type" id="reportType" required>
+              <option value="lost">Lost Item</option>
+              <option value="found">Found Item</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" required placeholder="e.g., Black iPhone 13" />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Category</label>
+            <select name="category" required>
+              <option value="Electronics">Electronics</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Keys">Keys</option>
+              <option value="Wallet">Wallet</option>
+              <option value="Phone">Phone</option>
+              <option value="Jewelry">Jewelry</option>
+              <option value="Documents">Documents</option>
+              <option value="Bags">Bags</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" name="location" required placeholder="Where was it lost/found?" />
+          </div>
+
+          <div class="form-group">
+            <label>GPS (Real-time)</label>
+            <div class="inline-field">
+              <input type="text" name="locationCoords" id="locationCoords" readonly placeholder="Lat, Lng" />
+              <button class="btn-secondary" type="button" id="gpsBtn">Use GPS</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Date & Time</label>
+            <input type="datetime-local" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label>Contact Information (Admin Only)</label>
+            <input type="text" name="contactInfo" required placeholder="Phone or email" />
+          </div>
+
+          <div id="foundFields" style="display:none;">
+            <div class="form-group">
+              <label>Found Person Name (Admin Only)</label>
+              <input type="text" name="foundPersonName" placeholder="Name" />
+            </div>
+            <div class="form-group">
+              <label>Found Person Phone (Admin Only)</label>
+              <input type="text" name="foundPersonPhone" placeholder="Phone" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Photo</label>
+            <input type="file" name="imageFile" accept="image/*" />
+          </div>
+
+          <div class="form-group">
+            <label>Image URL (optional)</label>
+            <input type="url" name="imageUrl" placeholder="https://example.com/image.jpg" />
+          </div>
+
+          <button class="btn-primary" type="submit">Submit Report</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="myReportsView" class="view">
+      <h1 class="page-title">My Reports</h1>
+      <div class="section-block">
+        <h2 class="section-title">Active Reports</h2>
+        <div id="myReportsGrid" class="items-grid"></div>
+        <div id="myReportsEmpty" class="empty-state">You haven't reported any items yet.</div>
+      </div>
+      <div class="section-block">
+        <h2 class="section-title">Completed Reports</h2>
+        <div id="myReportsCompletedGrid" class="items-grid"></div>
+        <div id="myReportsCompletedEmpty" class="empty-state">No completed reports yet.</div>
+      </div>
+    </section>
+
+    <section id="adminView" class="view">
+      <h1 class="page-title admin-title">Admin Dashboard</h1>
+
+      <div id="adminLogin" class="form-card">
+        <form id="adminLoginForm" class="form">
+          <div class="form-group">
+            <label>Admin Password</label>
+            <input type="password" name="password" required />
+          </div>
+          <button class="btn-primary" type="submit">Login</button>
+        </form>
+      </div>
+
+      <div id="adminContent" style="display:none;">
+        <div id="statsGrid" class="stats-grid"></div>
+        <div class="admin-items-card">
+          <h2>All Items</h2>
+          <div id="adminItemsList" class="admin-items-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="chatPanel" class="chat-panel" aria-hidden="true">
+    <div class="chat-card">
+      <div class="chat-header">
+        <div>
+          <div class="chat-title" id="chatTitle">Private chat</div>
+          <div class="chat-subtitle" id="chatSubtitle">Do not share personal information in messages.</div>
+        </div>
+        <button class="btn-secondary btn-small" id="chatCloseBtn" type="button">Close</button>
+      </div>
+      <div class="chat-select-row" id="chatSelectRow" style="display:none;">
+        <label for="chatSelect">Chat list</label>
+        <select id="chatSelect"></select>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <form id="chatForm" class="chat-form">
+        <input type="text" id="chatInput" placeholder="Type a message..." maxlength="1000" required />
+        <button class="btn-primary btn-small" type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3><a class="footer-link" href="/">FindIt</a></h3>
+          <p>novainfotech@gmail.com</p>
+        </div>
+        <div>
+          <h3>Quick Links</h3>
+          <p>About Us</p>
+          <p>How It Works</p>
+          <p>FAQ</p>
+        </div>
+        <div>
+          <h3>Services</h3>
+          <p>Lost Item Recovery</p>
+          <p>Found Item Reporting</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
